@@ -9,7 +9,7 @@ struct node
 {
     int data;
     struct node *link;
-} *head = NULL, *p, *k;
+} *head = NULL, *p, *k,*q;
 void main()
 {
     int ch1, ch2, x;
@@ -39,7 +39,7 @@ void main()
 }
 void insert()
 {
-    int n, x;
+    int n, x,s;
     printf("where do you want to insert\n1.beginning\n2.end\n3.anywhere\n");
     scanf("%d", &x);
     switch (x)
@@ -48,11 +48,13 @@ void insert()
         p = (struct node *)malloc(sizeof(struct node));
         printf("enter the element: ");
         scanf("%d", &n);
+        p->data=n;
         if(head!=NULL){
         p->link = head; 
         head =p;
         }
         else{
+            p->link=NULL;
             head=p;
         }
         break;
@@ -74,6 +76,33 @@ void insert()
             k->link = p;
         }
         break;
+    case 3:
+    
+        p = (struct node *)malloc(sizeof(struct node));
+        printf("enter the element: ");
+        scanf("%d", &n);
+        printf("enter the position to insert: ");
+        scanf("%d", &s);
+        p->data = n;
+        if (s == 1)
+        {
+            head = p;
+            p->link=NULL;
+        }
+       
+        else{
+             k=head;
+            for (int i = 1; i < s-1; i++)
+            {
+                k=k->link;
+            }
+            
+            p->link=k->link;
+            k->link=p;
+
+
+        }
+    
     }
 }
 
