@@ -12,7 +12,7 @@ struct node
 } *head = NULL, *p, *k, *q;
 void main()
 {
-    int ch1, ch2, x;
+    int ch1, x;
     while (1)
     {
 
@@ -33,7 +33,11 @@ void main()
             search();
             break;
         case 5:
+        
             break;
+        default:
+        printf("Invalid choice!!!");
+        break;
         }
     }
 }
@@ -213,12 +217,13 @@ void search()
     int n, flag = 0;
     printf("Enter the element to search: ");
     scanf("%d", &n);
-    for (k = head; k->link != NULL; k = k->link)
+    for (k = head; k!= NULL; k = k->link)
     {
         if (k->data == n)
         {
             printf("Element found.\n");
             flag = 1;
+            break;
         }
     }
     if (flag == 0)
