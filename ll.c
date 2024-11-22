@@ -10,7 +10,7 @@ struct node
     int data;
     struct node *link;
 } *head = NULL, *p, *k, *q;
-void main()
+int main()
 {
     int ch1, x;
     while (1)
