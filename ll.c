@@ -1,233 +1,206 @@
-#include <stdio.h>
-#include <stdlib.h>
+#include<stdio.h>
+#include<stdlib.h>
 void insert();
 void display();
-void delete();
 void search();
+void delete();
 
-struct node
-{
+struct node{
     int data;
-    struct node *link;
-} *head = NULL, *p, *k, *q;
-int main()
+    struct node* next;
+}*head=NULL,*temp,*new;
+void main()
 {
-    int ch1, x;
-    while (1)
-    {
-
-        printf("\nchoose the option\n1.insert\n2.delete\n3.display\n4.search\n5.exit\n");
-        scanf("%d", &ch1);
-        switch (ch1)
-        {
-        case 1:
-            insert();
-            break;
-        case 2:
-            delete ();
-            break;
-        case 3:
-            display();
-            break;
-        case 4:
-            search();
-            break;
-        case 5:
-        
-            break;
-        default:
-        printf("Invalid choice!!!");
+  int ch;
+  while(1){
+  printf("Enter the operation\n1.insert\n2.delete\n3.display\n4.search\n5.exit\n");
+  scanf("%d",&ch);
+  switch(ch){
+    case 1:insert();
+           break;
+    case 2:delete();
         break;
-        }
-    }
+    case 3:display();
+           break;
+    case 4:search();
+           break;
+    case 5:exit(0);
+           break;
+    default:printf("invalid choice");                         
+  }
+  }
 }
-void insert()
-{
-    int n, x, s, count = 0;
-    printf("where do you want to insert\n1.beginning\n2.end\n3.anywhere\n");
-    scanf("%d", &x);
-    switch (x)
-    {
-    case 1:
-        p = (struct node *)malloc(sizeof(struct node));
-        printf("Enter the element: ");
-        scanf("%d", &n);
-        p->data = n;
-        if (head != NULL)
-        {
-            p->link = head;
-            head = p;
-        }
-        else
-        {
-            p->link = NULL;
-            head = p;
-        }
-        break;
-    case 2:
-        p = (struct node *)malloc(sizeof(struct node));
-        printf("enter the element: ");
-        scanf("%d", &n);
-        p->data = n;
-        p->link = NULL;
-        if (head == NULL)
-        {
-            head = p;
-        }
-        else
-        {
-            for (k = head; k->link != NULL; k = k->link)
+
+void insert(){
+  int ch,n,pos,count=0;
+  printf("Enter the position\n1.insert at beginning\n2.insert at end\n3.insert at anywhere\n");
+  scanf("%d",&ch);
+  new=(struct node*)malloc(sizeof(struct node));
+  switch(ch){
+       case 1:
+       printf("Enter the element: ");
+       scanf("%d",&n);
+       new->data=n;
+       new->next=NULL;
+       if(head==NULL){
+              head=new;
+       }
+       else{
+              new->next=head;
+              head=new;
+       }
+       break;
+       case 2:
+       printf("Enter the element: ");
+       scanf("%d",&n);
+       new->data=n;
+       new->next=NULL;
+       if(head==NULL){
+              head=new;
+       }
+       else{
+             for(temp=head;temp->next!=NULL;temp=temp->next)
+             {
+             }
+             temp->next=new;
+       }
+       break;
+       case 3:
+       printf("Enter the element: ");
+       scanf("%d",&n);
+       new->data=n;
+       new->next=NULL;
+       printf("Enter the position: ");
+       scanf("%d",&pos);
+       temp=head;
+       while(temp!=NULL){
+              count++;
+              temp=temp->next;
+       }
+       if(head==NULL){
+              head=new;
+       }
+       else if(pos>count+1){
+              printf("Out of range!!\n");
+              return;
+       }
+       else if(pos==1){
+              temp=head;
+              new->next=temp;
+              head=new;
+       }
+       else{
+            temp=head;
+            for(int i=1;i<pos-1;i++)  
             {
+              temp=temp->next;
             }
-            k->link = p;
-        }
-        break;
-    case 3:
-
-        p = (struct node *)malloc(sizeof(struct node));
-        printf("enter the element: ");
-        scanf("%d", &n);
-        printf("enter the position to insert: ");
-        scanf("%d", &s);
-        p->data = n;
-        k = head;
-        while (k != NULL)
-        {
-            count++;
-            k = k->link;
-        }
-        if (s > count)
-        {
-            printf("Out of range!!");
-            return;
-        }
-
-        if (s == 1)
-        {
-            head = p;
-            p->link = NULL;
-        }
-        else
-        {
-            k = head;
-
-            for (int i = 1; i < s - 1; i++)
-            {
-                k = k->link;
-            }
-            p->link = k->link;
-            k->link = p;
-        }
-
-        break;
-    }
+            new->next=temp->next;
+            temp->next=new;
+       }
+       break;
+  }
 }
 
 void display()
-
 {
-    if (head == NULL)
-    {
-        printf("data is empty");
-    }
-    for (p = head; p != NULL; p = p->link)
-        printf("%d\t", p->data);
-}
-
-void delete()
-{
-    int n, x, pos, count = 0;
-    printf("where do you want to delete\n1.beginning\n2.end\n3.anywhere\n");
-    scanf("%d", &x);
-    switch (x)
-    {
-    case 1:
-        if (head == NULL)
-        {
-            printf("there is no element to delete\n");
-        }
-        else
-        {
-            k = head;
-            head = head->link;
-            free(k);
-        }
-        break;
-    case 2:
-        if (head == NULL)
-        {
-            printf("there is no element to delete\n");
-        }
-        else if (head->link == NULL)
-        {
-            free(head);
-            head = NULL;
-        }
-        else
-        {
-            struct node *prev = NULL;
-            for (k = head; k->link != NULL; k = k->link)
-            {
-                prev = k;
-            }
-            prev->link = NULL;
-            free(k);
-        }
-        break;
-    case 3:
-        printf("Enter the position of element to be deleted: ");
-        scanf("%d", &pos);
-        k = head;
-        while (k != NULL)
-        {
-            count++;
-            k = k->link;
-        }
-        if (pos > count)
-        {
-            printf("Out of range!!");
-            return;
-        }
-        if (pos == 1)
-        {
-            k = head;
-            head = head->link;
-            free(k);
-        }
-
-        else
-        {
-
-            k = head;
-            struct node *prev = NULL;
-            for (int i = 1; i < pos; i++)
-            {
-                prev = k;
-                k = k->link;
-            }
-            prev->link = k->link;
-            free(k);
-        }
-        break;
-    }
+ if(head==NULL)
+ {
+       printf("Empty!!");
+ }
+ for(temp=head;temp!=NULL;temp=temp->next)
+ {
+       printf("%d\t",temp->data);
+ }
+ printf("\n");
 }
 
 void search()
 {
-    int n, flag = 0;
-    printf("Enter the element to search: ");
-    scanf("%d", &n);
-    for (k = head; k!= NULL; k = k->link)
-    {
-        if (k->data == n)
-        {
-            printf("Element found.\n");
-            flag = 1;
-            break;
-        }
-    }
-    if (flag == 0)
-    {
-        printf("Element not found\n");
-    }
+ int n,flag=0;
+ printf("Enter the element to be searched: ");
+ scanf("%d",&n);
+ for(temp=head;temp->next!=NULL;temp=temp->next)
+ {
+       if(temp->data==n){
+          flag=1;
+       }
+ }
+ if(flag==1){
+       printf("Element found.\n");
+ }
+ else{
+       printf("Element not found.\n");
+ }
+}
+
+void delete()
+{
+ int ch,n,count=0,pos;
+ printf("Enter your choice:\n1.delete from beginning\n2.delete from end\n3.delete from anywhere\n");
+ scanf("%d",&ch);
+ switch(ch){
+       case 1:
+       if(head==NULL)
+       {
+              printf("No element to delete.");
+       }
+       else{
+              temp=head;
+              head=head->next;
+              free(temp);
+       }
+       break;
+       case 2:
+       if(head==NULL)
+       {
+              printf("No element to delete.");
+              return;
+       }
+       else if(head->next==NULL){
+              head=NULL;
+              free(head);
+       }
+       else{
+              struct node *prev=NULL;
+              for(temp=head;temp->next!=NULL;temp=temp->next)
+              {
+                     prev=temp;
+              }
+              prev->next=NULL;
+              free(temp);
+       }
+       break;
+       case 3:
+       printf("Enter the position of element to be deleted: ");
+       scanf("%d",&pos);
+       temp=head;
+       while(temp!=NULL){
+              count++;
+              temp=temp->next;
+       }
+       if(head==NULL){
+              printf("No element to delete.\n");
+              return;
+       }
+       if(pos>count){
+              printf("out of range\n");
+       }
+       if (pos==1){
+              temp=head;
+              head=head->next;
+              free(temp);
+       }
+       else{
+              struct node *prev=NULL;
+              temp=head;
+              for(int i=1;i<pos;i++)
+              {      
+                     prev=temp;
+                     temp=temp->next;
+              }
+              prev->next=temp->next;
+              free(temp);
+       }
+ }
 }
