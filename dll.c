@@ -1,161 +1,262 @@
 #include <stdio.h>
 #include <stdlib.h>
-void insertfro();
+void insert();
 void display();
-void search();
-void deletefro();
-void insertrear();
-void deleterear();
+void delete();
+void deletebeg();
+void deleteend();
+
 struct node
 {
     int data;
     struct node *next;
-    struct node *prev; 
+    struct node *prev;
+} *head = NULL, *tail = NULL, *temp, *new;
 
-} *head= NULL,*new,*temp;
-int main()
+void main()
 {
-    int ch1, x;
+    int ch;
     while (1)
     {
-
-        printf("\nchoose the option\n1.insert at front\n2.insert at rear\n3.delete from front\n4.delete from rear\n5.display\n6.search\n7.exit\n");
-        scanf("%d", &ch1);
-        switch (ch1)
+        printf("Select the operation\n1.Insert\n2.Delete\n3.Display\n4.Exit\n");
+        scanf("%d", &ch);
+        switch (ch)
         {
         case 1:
-            insertfro();
+            insert();
             break;
         case 2:
-            insertrear();
+            delete();
             break;
         case 3:
-            deletefro();
-            break;
-        case 4:
-            deleterear();
-            break;
-        case 5:
             display();
             break;
-        case 6:
-            search();
-            break;
-        case 7:
-            return 0;
+        case 4:
+            exit(0);
             break;
         default:
-        printf("Invalid choice!!!\n");
-        break;
+            printf("invalid choice!!");
         }
     }
 }
-void insertfro()
-{
-    int x;
-     new = (struct node *)malloc(sizeof(struct node));
-     printf("enter the data : ");
-     scanf("%d",&x);
-     new->data=x;
-     if(head==NULL)
-     {
-        head=new;
-        new->prev=NULL;
-        new->next=NULL;
-        
-     }
-     else{
-        new->next=head;
-        head=new;
-        new->prev=NULL;
 
-        
-     }
-}
-void display()
+void insert()
 {
-    
+    int ch, pos, count = 0;
+    new = (struct node *)malloc(sizeof(struct node));
+    printf("Select the position\n1.Insert at beginning\n2.Insert at end\n3.Insert at anywhere\n");
+    scanf("%d", &ch);
+    switch (ch)
+    {
+    case 1:
+        printf("Enter the element: ");
+        scanf("%d", &new->data);
+        new->next = NULL;
+        new->prev = NULL;
+        if (head == NULL)
+        {
+            head = new;
+            tail = new;
+        }
+        else
+        {
+            temp = head;
+            new->next = temp;
+            temp->prev = new;
+            head = new;
+        }
+        break;
+    case 2:
+        printf("Enter the element: ");
+        scanf("%d", &new->data);
+        if (head == NULL)
+        {
+            head = new;
+            tail = new;
+            new->next = NULL;
+            new->prev = NULL;
+        }
+        else
+        {
+            temp = tail;
+            temp->next = new;
+            new->prev = temp;
+            new->next = NULL;
+            tail = new;
+        }
+        break;
+    case 3:
+        printf("Enter the element: ");
+        scanf("%d", &new->data);
+        printf("Enter the position: ");
+        scanf("%d", &pos);
+        temp = head;
+        while (temp != NULL)
+        {
+            count++;
+            temp = temp->next;
+        }
+        if (pos == 1)
+        {
+            new->prev = NULL;
+            new->next = NULL;
+            if (head == NULL)
+            {
+                head = new;
+                tail = new;
+            }
+            else
+            {
+                temp = head;
+                new->next = temp;
+                temp->prev = new;
+                head = new;
+            }
+            return;
+        }
+        if (pos == count + 1)
+        {
+            if (head == NULL)
+            {
+                head = new;
+                tail = new;
+                new->next = NULL;
+                new->prev = NULL;
+            }
+            else
+            {
+                temp = tail;
+                temp->next = new;
+                new->prev = temp;
+                new->next = NULL;
+                tail = new;
+            }
+            return;
+        }
+        if (pos < 1 || pos > count + 1)
+        {
+            printf("Out of range!!\n");
+            return;
+        }
+        else
+        {
+            temp = head;
+            for (int i = 1; i < pos - 1; i++)
+            {
+                temp = temp->next;
+            }
+            new->next = temp->next;
+            new->prev = temp;
+            temp->next = new;
+            new->next->prev = new;
+        }
+    }
+}
+
+void display()
 {
     if (head == NULL)
     {
-        printf("data is empty\n");
+        printf("List is empty.\n");
+        return;
     }
+    printf("Head : ");
     for (temp = head; temp != NULL; temp = temp->next)
-        printf("%d\t", temp->data);
-}
-}
-void search()
-{
-{
-    int n, flag = 0;
-    printf("Enter the element to search: ");
-    scanf("%d", &n);
-    for (temp = head; temp!= NULL; temp = temp->next)
     {
-        if (temp->data == n)
-        {
-            printf("Element found.\n");
-            flag = 1;
-            break;
-        }
+        printf(" %d ", temp->data);
     }
-    if (flag == 0)
+    printf(" : Tail\n");
+    printf("Tail : ");
+    for (temp = tail; temp != NULL; temp = temp->prev)
     {
-        printf("Element not found\n");
+        printf(" %d ", temp->data);
     }
+    printf(" : Head\n");
 }
 
-}
-void deletefro(){
-    if(head==NULL)
+void deletebeg()
+{
+    if (head == tail)
     {
-        printf("no element to delete\n");
-
-    }
-    else
-    {
-        temp=head;
-        head=temp->next;
+        temp = head;
         free(temp);
-
-    }
-}
-void insertrear(){
-    int n;
-    printf("Enter the element to insert : ");
-    scanf("%d",&n);
-    new = (struct node *)malloc(sizeof(struct node));
-    new->data=n;
-    if(head==NULL)
-    {
-       head=new;
-        new->prev=NULL;
-        new->next=NULL;  
-    }
-    else{
-         for (temp = head; temp->next != NULL; temp = temp->next)
-            {
-            }
-            temp->next = new;
-            new->prev=temp;
-            new->next=NULL;
-    }
-    
-
-}
-void deleterear()
-{
-     if(head==NULL)
-    {
-        printf("no element to delete\n");
-
+        head = NULL;
+        printf("List is empty now.\n");
     }
     else
     {
-        for (temp = head; temp->next != NULL; temp = temp->next)
+        temp = head;
+        head->next->prev = NULL;
+        head = head->next;
+        free(temp);
+    }
+}
+
+void deleteend()
+{
+    if (head == tail)
+    {
+        temp = head;
+        free(temp);
+        head = NULL;
+        printf("List is empty now.\n");
+    }
+    else
+    {
+        temp = tail;
+        tail = tail->prev;
+        tail->next = NULL;
+        free(temp);
+    }
+}
+
+void delete()
+{
+    int ch, pos, count = 0;
+    printf("Select the position\n1.Delete from the beginning\n2.Delete from the end\n3.Delete from anywhere\n");
+    scanf("%d", &ch);
+    switch (ch)
+    {
+    case 1:
+        deletebeg();
+        break;
+    case 2:
+        deleteend();
+        break;
+    case 3:
+        printf("Enter the position of element to be deleted: ");
+        scanf("%d", &pos);
+        temp = head;
+        while (temp != NULL)
+        {
+            count++;
+            temp = temp->next;
+        }
+        if (pos == 1)
+        {
+            deletebeg();
+            return;
+        }
+        if (count == pos)
+        {
+            deleteend();
+            return;
+        }
+        if (pos > count)
+        {
+            printf("Out of range!!");
+            return;
+        }
+        else
+        {
+            temp = head;
+            for (int i = 1; i < pos; i++)
             {
+                temp = temp->next;
             }
-           temp->prev->next=NULL;
-           free(temp);
+            temp->prev->next = temp->next;
+            temp->next->prev = temp->prev;
+            free(temp);
+        }
     }
 }
