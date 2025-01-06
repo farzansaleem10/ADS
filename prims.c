@@ -1,5 +1,4 @@
 #include <stdio.h>
-#include <string.h>
 #include <limits.h>
 
 #define MAX_NODES 100
@@ -24,11 +23,11 @@ void main()
         }
     }
     
-    int e = 0;
+    int e = 1;
     int cost = 0;
     V[0] = 1;
     // For each edge in the spanning tree
-    while (e < n - 1) {
+    while (e < n ) {
         int min, u, v;
         // For each visited node in the graph
         for (int i = 0; i < n; i++) {
